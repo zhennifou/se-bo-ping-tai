@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">APK下载导航网站</title>
+    <meta name="description" id="page-description" content="提供最新最全的安卓应用下载服务">
+    <meta name="keywords" id="page-keywords" content="APK下载,安卓应用,手游下载,软件下载">
+    <meta name="author" content="APK下载导航">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" id="og-title" content="APK下载导航网站">
+    <meta property="og:description" id="og-description" content="提供最新最全的安卓应用下载服务">
+    <meta property="og:image" id="og-image" content="/public/images/logo.png">
+    <meta property="og:url" content="">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="">
+    <link rel="icon" id="page-favicon" href="/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="public/css/style.css">
+    <link rel="stylesheet" href="public/css/swiper.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>APK下载导航</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active">首页</a></li>
+                    <li><a href="#" class="categories-toggle">分类</a>
+                        <div class="categories-dropdown">
+                            <!-- 分类菜单将通过JS动态加载 -->
+                        </div>
+                    </li>
+                    <li><a href="#about">关于我们</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 轮播广告区域 -->
+    <section class="slider-container">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <!-- 轮播图片将通过JS动态加载 -->
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    </section>
+
+    <!-- 主要内容区 -->
+    <main>
+        <div class="container">
+            <!-- 分类APK展示区域，每个分类将显示12个窗口 -->
+            <div id="categories-container">
+                <!-- 分类内容将通过JS动态加载 -->
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 APK下载导航网站</p>
+        </div>
+    </footer>
+
+    <script src="public/js/swiper.min.js"></script>
+    <script src="public/js/main.js"></script>
+    <script>
+        // 隐藏后台管理链接，仅在控制台输出后台路径
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取后台路径
+            const adminPath = localStorage.getItem('adminPath');
+            
+            // 初次访问时生成随机后台路径
+            if (!adminPath) {
+                // 生成15-20位随机路径
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                let result = '';
+                const length = Math.floor(Math.random() * 6) + 15;
+                
+                for (let i = 0; i < length; i++) {
+                    result += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                
+                localStorage.setItem('adminPath', result);
+                console.log('已生成安全的后台管理路径，请记住：' + result + '/login.html');
+            } else {
+                console.log('后台管理路径：' + adminPath + '/login.html');
+            }
+            
+            // 加载SEO信息
+            loadSeoInfo();
+        });
+        
+        // 加载SEO信息
+        async function loadSeoInfo() {
+            try {
+                // 尝试从localStorage获取SEO设置
+                const allData = JSON.parse(localStorage.getItem('allData') || '{}');
+                const seoSettings = allData.seoSettings;
+                
+                if (seoSettings) {
+                    // 设置页面标题
+                    if (seoSettings.siteTitle) {
+                        document.getElementById('page-title').textContent = seoSettings.siteTitle;
+                        document.getElementById('og-title').setAttribute('content', seoSettings.siteTitle);
+                    }
+                    
+                    // 设置页面描述
+                    if (seoSettings.siteDescription) {
+                        document.getElementById('page-description').setAttribute('content', seoSettings.siteDescription);
+                        document.getElementById('og-description').setAttribute('content', seoSettings.siteDescription);
+                    }
+                    
+                    // 设置页面关键词
+                    if (seoSettings.siteKeywords) {
+                        document.getElementById('page-keywords').setAttribute('content', seoSettings.siteKeywords);
+                    }
+                    
+                    // 设置页面图片
+                    if (seoSettings.siteLogo) {
+                        document.getElementById('og-image').setAttribute('content', seoSettings.siteLogo);
+                    }
+                    
+                    // 设置网站图标
+                    if (seoSettings.siteFavicon) {
+                        document.getElementById('page-favicon').setAttribute('href', seoSettings.siteFavicon);
+                    }
+                }
+                
+                // 设置canonical和og:url
+                const canonicalUrl = window.location.origin + window.location.pathname;
+                document.querySelector('link[rel="canonical"]').setAttribute('href', canonicalUrl);
+                document.querySelector('meta[property="og:url"]').setAttribute('content', canonicalUrl);
+                
+            } catch (error) {
+                console.error('加载SEO信息失败:', error);
+            }
+        }
+    </script>
+</body>
+</html> 
